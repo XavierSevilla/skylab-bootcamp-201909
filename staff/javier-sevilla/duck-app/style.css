@@ -23,21 +23,18 @@ body {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  border: 2px dotted red;
 }
 .boxheader__logo {
   margin-top: 1vh;
   margin-left: 3vh;
   width: 17vh;
   height: 17vh;
-  border: 2px dotted red;
 }
 .boxheader__title {
   padding: 0.4rem;
   font-size: 30px;
   font-family: "Noto Sans JP", sans-serif;
   font-family: "Shadows Into Light", cursive;
-  border: 2px dotted red;
 }
 
 .view {

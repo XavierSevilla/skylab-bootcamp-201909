@@ -1,8 +1,4 @@
-
-var searchCriteria = document.getElementsByClassName("search__criteria");
-var searchSubmit = document.getElementsByClassName("search__submit");
-debugger
-var search = document.getElementById("search");
+var search = document.getElementsByClassName("search")[0];
 search.addEventListener("submit", searchFunc);
 var ul = document.createElement('ul');
 
@@ -11,33 +7,43 @@ function searchFunc(e) {
 
     ul.innerText = " ";
 
-    var searchString = e.target.search__criteria.value;
+    var searchString = this.search__criteria.value;
 
     var xhr = new XMLHttpRequest;
     xhr.open('GET', 'https://duckling-api.herokuapp.com/api/search?q=' + searchString);
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 201) {
-           var ducks = JSON.parse(xhr.responseText);debugger;
+            var ducks = JSON.parse(xhr.responseText);
 
+            var results = document.getElementsByClassName("results")[0];debugger;
+            results.innerHTML = '';
 
-
-            document.body.append(ul);
             ducks.forEach(function(duck) {
+                var results__item = document.createElement('li');
+                results__item.classList.add("results__item");
+
+                var item = document.createElement('a');
+                item.classList.add("item");
+
+                var title = document.createElement('h2');
+                title.classList.add('item__title');
+                title.innerText = duck.title;
+
+                var image = document.createElement('img');
+                image.classList.add('item__image');
+                image.src = duck.imageUrl;
+
+                var price = document.createElement('span');
+                price.classList.add('item__price');
+                price.innerText = duck.price;
+
+                results__item.append(item);
                 
+                item.append(title, image, price);
 
-
-
-                document.getElementsByClass("item__title").innerHTML = "duck.title";
-
-                // item__title.append(duck.title)
-                // item__image.append(duck.imageUrl)
-                // item_price.append(duck.price)
-                // var li = document.createElement('li');
-                // var img = document.createElement('img');
-                // img.src = duck.imageUrl;
-                // li.append(img);
-                // ul.append(li);
+                results.append(results__item);          
             });
+            
         }
     };
     xhr.send();
