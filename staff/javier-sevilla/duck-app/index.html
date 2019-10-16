@@ -1,34 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Duck api</title>
-    <link rel="stylesheet"  type="text/css" href="style.css?v=2">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP|Shadows+Into+Light&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="icon.png" type="image/x-icon">
 </head>
-<body class="container">
+
+<body>
     <header class="boxheader">
         <img class="boxheader__logo" src="img/logo.png" alt="logo" width="122" height="98">
         <h1 class="boxheader__title">Buscador de patos</h1>
     </header>
 
-    <nav class="search">
+    <section class="view _hide">
+        <form id="search">
+            <span class="search__icon">🐣</span>
+            <input class="search__criteria" type="text" name="search__criteria" placeholder="criteria">
+            <input class="search__submit" type="submit" name="search__submit" value="🔍">
+        </form>
+        <ul class="results">
+            <li class="results__item">
+                <a href="#" class="item">
+                    <h2 class="item__title">This is a Super Duuuuuuuck</h2>
+                    <img class="item__image" src="https://fakeimg.pl/300x200/?text=Hello">
+                    <span class="item__price">10€</span>
+                </a>
+            </li>
+            <li class="results__item">
+                <a href="#" class="item">
+                    <h2 class="item__title">Duck X</h2>
+                    <img class="item__image" src="https://fakeimg.pl/300x200/?text=Hello">
+                    <span class="item__price">10€</span>
+                </a>
+            </li>
+            <li class="results__item">
+                <a href="#" class="item">
+                    <h2 class="item__title">Duck X</h2>
+                    <img class="item__image" src="https://fakeimg.pl/300x200/?text=Hello">
+                    <span class="item__price">10€</span>
+                </a>
+            </li>
+            <li class="results__item">
+                <a href="#" class="item">
+                    <h2 class="item__title">Duck X</h2>
+                    <img class="item__image" src="https://fakeimg.pl/300x200/?text=Hello">
+                    <span class="item__price">10€</span>
+                </a>
+            </li>
+            <li class="results__item">
+                <a href="#" class="item">
+                    <h2 class="item__title">Duck X</h2>
+                    <img class="item__image" src="https://fakeimg.pl/300x200/?text=Hello">
+                    <span class="item__price">10€</span>
+                </a>
+            </li>
+            <li class="results__item">
+                <a href="#" class="item">
+                    <h2 class="item__title">Duck X</h2>
+                    <img class="item__image" src="https://fakeimg.pl/300x200/?text=Hello">
+                    <span class="item__price">10€</span>
+                </a>
+            </li>
+            <li class="results__item">
+                <a href="#" class="item">
+                    <h2 class="item__title">Duck X</h2>
+                    <img class="item__image" src="https://fakeimg.pl/300x200/?text=Hello">
+                    <span class="item__price">10€</span>
+                </a>
+            </li>
+        </ul>
+    </section>
 
+    <section class="view detail _hide">
+        <h2 class="detail__title">Duck X</h2>
+        <img class="detail__image" src="https://fakeimg.pl/500x300/?text=Hello">
+        <p class="detail__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate neque omnis
+            sunt dolor repellat incidunt voluptates odio eos consequatur corrupti. Accusantium porro minima molestias
+            voluptatem dolor nobis! Perspiciatis, vero maiores!</p>
+        <span class="detail__price">10€</span>
+        <a class="detail__back" href="#">Go back</a>
+    </section>
 
-    </nav>
-
-    <main>
-
-
-    </main>
-
-    <footer>
-
-
-    </footer>  
+    <script src="main.js"></script>
 </body>
+
 </html>
