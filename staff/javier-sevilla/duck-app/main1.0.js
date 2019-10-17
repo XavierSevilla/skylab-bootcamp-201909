@@ -1,4 +1,4 @@
-if (typeof Array.prototype.shuffle === 'undefined')
+if (typeof Array.prototype.shuffle === 'undefined') debugger;
     Array.prototype.shuffle = function () {
         var result = [];
 
@@ -112,6 +112,9 @@ function listInitialRandomDucks() {
                 item.append(title, image, price);
 
                 results.append(result);
+
+            
+
             });
         }
     };
