@@ -1,4 +1,4 @@
-var search = document.getElementsByClassName("search")[0];
+var search = document.getElementsByClassName("search")[0];debugger;
 search.addEventListener("submit", searchFunc);
 var ul = document.createElement('ul');
 
