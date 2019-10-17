@@ -1,4 +1,4 @@
-function ResultItem(container) {
+function ResultItem(container) {debugger;
     Component.call(this, container);
     
     container.classList.add('results__item');

@@ -1,4 +1,4 @@
-function Detail(container) {
+function Detail(container) {debugger;
     Component.call(this, container);
 }
 

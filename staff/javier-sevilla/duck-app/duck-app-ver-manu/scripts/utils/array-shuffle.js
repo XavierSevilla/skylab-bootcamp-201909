@@ -1,4 +1,4 @@
-if (typeof Array.prototype.shuffle === 'undefined')
+if (typeof Array.prototype.shuffle === 'undefined')debugger;
     Array.prototype.shuffle = function () {
         var result = [];
 

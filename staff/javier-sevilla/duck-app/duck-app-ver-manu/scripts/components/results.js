@@ -1,4 +1,4 @@
-function Results(container) {
+function Results(container) {debugger;
     Component.call(this, container);
 
     container.innerHTML = '';

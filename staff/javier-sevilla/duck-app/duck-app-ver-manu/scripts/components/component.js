@@ -1,4 +1,4 @@
-function Component(container) {
+function Component(container) {debugger;
     this.__container__ = container;
 }
 

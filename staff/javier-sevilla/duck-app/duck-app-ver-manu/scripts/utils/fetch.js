@@ -1,4 +1,4 @@
-function fetch(method, url, callback) {
+function fetch(method, url, callback) {debugger;
     var xhr = new XMLHttpRequest;
 
     xhr.open(method, url);
