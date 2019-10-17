@@ -3,7 +3,7 @@ search.addEventListener("submit", searchFunc);
 var ul = document.createElement('ul');
 
 function searchFunc(e) {
-    e.preventDefault();
+    e.preventDefault();debugger;
 
     ul.innerText = " ";
 
@@ -13,9 +13,9 @@ function searchFunc(e) {
     xhr.open('GET', 'https://duckling-api.herokuapp.com/api/search?q=' + searchString);
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 201) {
-            var ducks = JSON.parse(xhr.responseText);
+            var ducks = JSON.parse(xhr.responseText);debugger;
 
-            var results = document.getElementsByClassName("results")[0];debugger;
+            var results = document.getElementsByClassName("results")[0];
             results.innerHTML = '';
 
             ducks.forEach(function(duck) {
@@ -95,7 +95,6 @@ function searchSingle(event,duck) {
     };
 
     xhr.send();
-
     
-}
+};
 
