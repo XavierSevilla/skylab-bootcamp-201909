@@ -1,4 +1,4 @@
-function ResultItem(container) {debugger;
+function ResultItem(container) {
     Component.call(this, container);
     
     container.classList.add('results__item');
@@ -8,7 +8,7 @@ ResultItem.extend(Component);
 
 ResultItem.prototype.onClick = undefined;
 
-ResultItem.prototype.render = function (result) {
+ResultItem.prototype.render = function (result) {debugger;
     var item = document.createElement('a');
     item.classList.add('item');
 
