@@ -1,28 +1,34 @@
-var views = document.getElementsByClassName('view');debugger;
+var views = document.getElementsByClassName('view');
 var loginView = new View(views[0]);
 var searchView = new View(views[1]);
 var detailView = new View(views[2]);
 
-var login =new Login(document.getElementsByClassName('login')[0]);debugger;
+var login =new Login(document.getElementsByClassName('login')[0]);
+var user = new User();
 login.onSubmit(function (email,password) {
-    loginUser(email, password, function (error) {
+    loginUser(email, password, (error, response)=>  {
         if (error) {
-            feedback.render(error.message);
-            feedback.show();
+            feedback.render(error.message)
+            feedback.show()
         } else {
-            login.hide();
-            searchView.show();
+            loginView.hide()
+            searchView.show()
+            feedback.hide()
+            const { id, token } = response
+            user.id = id
+            user.token = token
+            user.email = email
+            user.password = password
         }
     });
 });
 
-
 (function () {
-    searchDucks('', function (error, ducks) {
+    searchDucks('', (error, ducks)=>{
         if (error) {
             feedback.render(error.message);
 
-            results.hide();
+            results.hide();s
             feedback.show();
         } else {
             ducks = ducks.shuffle().splice(0, 3);
@@ -33,8 +39,8 @@ login.onSubmit(function (email,password) {
 })();
 
 var search = new Search(document.getElementsByClassName('search')[0]);
-search.onSubmit(function (query) {
-    searchDucks(query, function (error, ducks) {
+search.onSubmit(query =>{
+    searchDucks(query, (error, ducks)=> {
         if (error) {
             feedback.render(error.message);
 
@@ -53,8 +59,8 @@ var results = new Results(document.getElementsByClassName('results')[0]);
 results.onItemRender = function () {
     var item = new ResultItem(document.createElement('li'));
 
-    item.onClick = function (id) {
-        retrieveDuck(id, function (error, duck) {
+    item.onClick = id=> {
+        retrieveDuck(id, (error, duck)=> {
             if (error) {
                 feedback.render(error.message);
 
