@@ -1,4 +1,4 @@
-function searchDucks(query, callback) {debugger;
+function searchDucks(query, callback) {
     if (typeof query !== 'string') throw new TypeError(query +  ' is not a string');
     if (typeof callback !== 'function') throw new TypeError(callback +  ' is not a function');
 

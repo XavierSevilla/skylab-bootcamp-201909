@@ -11,13 +11,42 @@
 </head>
 
 <body>
+    <header class="boxheader">
+        <img class="boxheader__logo" src="img/logo.png" alt="logo" width="122" height="98">
+        <h1 class="boxheader__title">Buscador de patos</h1>
+    </header>
+
+    <section class="view userOptions hide">
+        <a class="userOptions__login" href="#">Login</a>
+        <span class="userOptions__slash">/</span>
+        <a class="userOptions__register" href="#">Register</a>
+    </section>
+
+    <section class="view">
+            <form class="register">
+                Email:<br>
+                <input class="register__criteria" type="text" name="userid"><br>
+                Password:<br>
+                <input class="register__criteria" type="password" name="psw"><br>
+                Name:<br>
+                <input class="register__criteria" type="text" name="name"><br>
+                Surmname:<br>
+                <input class="register__criteria" type="text" name="surname"><br>
+                Age:<br>
+                <input class="register__criteria" type="text" name="age"><br>
+                Gender:<br>
+                <input class="register__criteria" type="text" name="gender"><br>
+                <button class="register__submit">Submit</button>
+            </form>
+        </section>
+
     <section class="view">
         <form class="login">
-                User email:<br>
-                <input class="login__criteria" type="text" name="userid">
-                User password:
-                <input class="login__criteria" type="password" name="psw">
-                <button class="login__submit">🔍</button>
+            User email:
+            <input class="login__criteria" type="text" name="userid">
+            User password:
+            <input class="login__criteria" type="password" name="psw">
+            <button class="login__submit">🔍</button>
         </form>
     </section>
 
@@ -95,6 +124,11 @@
         <span class="detail__price">10€</span>
         <a class="detail__back" href="#">Go back</a>
     </section>
+
+    <footer class="boxheader">
+        <img class="boxheader__logo" src="img/logo.png" alt="logo" width="122" height="98">
+        <h1 class="boxheader__title">Buscador de patos</h1>
+    </footer>
 
     <!-- <script src="main.js"></script> -->
 </body>

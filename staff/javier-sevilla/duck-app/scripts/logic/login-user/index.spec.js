@@ -10,9 +10,6 @@ describe('Logic - login User', function() {
             expect(id).toBe('5dab3217dcc25e0009e06e65')
             expect(typeof token).toBe('string')
             done();
-
-
-
          })
     })
 
@@ -25,9 +22,23 @@ describe('Logic - login User', function() {
             expect(error).toBeDefined()
             done();
 
-
-
          })
     })
+
+    it('should fail on incorrect id or expression types', function() {
+        expect(function() { loginUser(1); }).toThrowError(TypeError, '1 is not a string');
+        expect(function() { loginUser(true); }).toThrowError(TypeError, 'true is not a string');
+        expect(function() { loginUser([]); }).toThrowError(TypeError, ' is not a string');
+        expect(function() { loginUser({}); }).toThrowError(TypeError, '[object Object] is not a string');
+        expect(function() { loginUser(undefined); }).toThrowError(TypeError, 'undefined is not a string');
+        expect(function() { loginUser(null); }).toThrowError(TypeError, 'null is not a string');
+
+        expect(function() { loginUser('red','red', 1); }).toThrowError(TypeError, '1 is not a function');
+        expect(function() { loginUser('red','red', true); }).toThrowError(TypeError, 'true is not a function');
+        expect(function() { loginUser('red','red', []); }).toThrowError(TypeError, ' is not a function');
+        expect(function() { loginUser('red','red', {}); }).toThrowError(TypeError, '[object Object] is not a function');
+        expect(function() { loginUser('red','red', undefined); }).toThrowError(TypeError, 'undefined is not a function');
+        expect(function() { loginUser('red','red', null); }).toThrowError(TypeError, 'null is not a function');
+    });
 
 })

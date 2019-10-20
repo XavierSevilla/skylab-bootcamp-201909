@@ -1,4 +1,4 @@
-function Search(container) {debugger;
+function Search(container) {
     Component.call(this, container);
 }
 

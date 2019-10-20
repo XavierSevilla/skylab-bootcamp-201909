@@ -1,4 +1,4 @@
-function call(method, url, sendParameter, callback) {debugger;
+function call(method, url, sendParameter, callback) {
     let headers = {}
 
     if (sendParameter) headers['Content-Type'] = 'application/json;charset=UTF-8'

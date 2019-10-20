@@ -1,4 +1,4 @@
-function loginUser(email, password, callback) {debugger;
+function loginUser(email, password, callback) {
     if (typeof email !== 'string') throw new TypeError(email +  ' is not a string');
     if (typeof password !== 'string') throw new TypeError(password +  ' is not a string');
     if (typeof callback !== 'function') throw new TypeError(callback +  ' is not a function');

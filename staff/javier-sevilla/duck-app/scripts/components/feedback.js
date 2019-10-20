@@ -1,4 +1,4 @@
-function Feedback(container) {debugger;
+function Feedback(container) {
     Component.call(this, container);
 }
 

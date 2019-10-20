@@ -16,7 +16,37 @@
         <h1 class="boxheader__title">Buscador de patos</h1>
     </header>
 
+    <section class="feedback hide">
+        <span class="feedback__icon">🤡</span>
+        <p class="feedback__message">Come with me...</p>
+        <span class="feedback__icon">🎈</span>
+    </section>
+
+    <section class="view userOptions hide">
+        <a class="userOptions__login" href="#">Login</a>
+        <span class="userOptions__slash">or</span>
+        <a class="userOptions__register" href="#">Register</a>
+    </section>
+
     <section class="view">
+        <form class="register">
+            Email:<br>
+            <input class="register__criteria" type="text" name="userid"><br>
+            Password:<br>
+            <input class="register__criteria" type="password" name="psw"><br>
+            Name:<br>
+            <input class="register__criteria" type="text" name="name"><br>
+            Surmname:<br>
+            <input class="register__criteria" type="text" name="surname"><br>
+            Age:<br>
+            <input class="register__criteria" type="text" name="age"><br>
+            Gender:<br>
+            <input class="register__criteria" type="text" name="gender"><br>
+            <button class="register__submit">Submit</button>
+        </form>
+    </section>
+
+    <section class="view hide">
         <form class="login">
             User email:
             <input class="login__criteria" type="text" name="userid">
@@ -33,12 +63,6 @@
         </form>
         <ul class="results">
         </ul>
-    </section>
-
-    <section class="feedback hide">
-        <span class="feedback__icon">🤡</span>
-        <p class="feedback__message">Come with me...</p>
-        <span class="feedback__icon">🎈</span>
     </section>
 
     <section class="view detail hide">
@@ -63,6 +87,7 @@
     <script src="scripts/logic/retrieve-duck/index.js"></script>
     <script src="scripts/logic/search-ducks/index.js"></script>
     <script src="scripts/logic/login-user/index.js"></script>
+    <script src="scripts/logic/register-user/index.js"></script>
     <script src="scripts/helpers/call.js"></script>
     <script src="scripts/components/component.js"></script>
     <script src="scripts/components/search.js"></script>
@@ -73,6 +98,7 @@
     <script src="scripts/components/view.js"></script>
     <script src="scripts/components/login.js"></script>
     <script src="scripts/components/user.js"></script>
+    <script src="scripts/components/register.js"></script>
     <script src="scripts/main.js"></script>
 </body>
 
