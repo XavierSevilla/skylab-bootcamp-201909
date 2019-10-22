@@ -56,16 +56,14 @@ login.onSubmit((email,password)=> {
             feedback.render(error.message)
             feedback.show()
         } else {
-            retrieveUser(response.id, response.token, (error, response)=>  {
-                if (error) {
-                    feedback.render(error.message)
-                    feedback.show()   
-                } else {                   
-                    loginView.hide()
-                    searchView.show()
-                    feedback.hide()                           
-                }                           
-            })
+            loginView.hide()
+            searchView.show()
+            feedback.hide()
+            const { id, token } = response
+            user.id = id
+            user.token = token
+            user.email = email
+            user.password = password
         }
     });
 });

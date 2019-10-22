@@ -1,4 +1,5 @@
 function fetch(method, url, headers, sendParameter, callback) {
+    
     var xhr = new XMLHttpRequest;
 
     xhr.open(method, url);
