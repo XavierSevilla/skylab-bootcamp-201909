@@ -15,3 +15,13 @@ Login.prototype.onSubmit = function (expression) {
            
     });
 };
+
+Login.prototype.onBack = function (expression) {
+    debugger
+        const searchPage = this.container.getElementsByTagName('a')[0]
+    
+        searchPage.addEventListener('click', function (event) {
+            event.preventDefault();
+            expression();
+        });
+};

@@ -4,7 +4,15 @@ function Detail(container) {
 
 Detail.extend(Component);
 
-Detail.prototype.onBack = undefined;
+Detail.prototype.onBack = function (expression) {
+    debugger
+        const searchPage = this.container.getElementsByTagName('a')[1]
+    
+        searchPage.addEventListener('click', function (event) {
+            event.preventDefault();
+            expression();
+        })
+}
 
 Detail.prototype.render = function (item) {
     var title = this.container.getElementsByClassName('detail__title')[0];

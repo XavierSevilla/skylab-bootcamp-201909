@@ -169,15 +169,22 @@ body {
   border-radius: 1rem;
   padding: 1rem;
   margin: 0.5rem;
+  font-size: 1.3rem;
+  font-family: "Noto Sans JP", sans-serif;
+  font-family: "Shadows Into Light", cursive;
 }
 .login__criteria {
   border-radius: 0.5rem;
   padding: 0.5rem;
-  font-size: 1rem;
+  width: 15rem;
 }
 .login__submit {
   border-radius: 0.5rem;
   padding: 0.5rem;
+  width: 5rem;
+}
+.login__back {
+  margin-left: 0.8rem;
 }
 
 .userOptions {
@@ -227,7 +234,7 @@ body {
   padding: 0.3rem;
   margin-top: 1rem;
   width: 15rem;
-  font-size: 3rem;
+  font-size: 4rem;
   font-family: "Noto Sans JP", sans-serif;
   font-family: "Shadows Into Light", cursive;
 }

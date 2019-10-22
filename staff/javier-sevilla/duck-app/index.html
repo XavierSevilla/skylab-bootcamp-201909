@@ -22,10 +22,10 @@
         <span class="feedback__icon">🎈</span>
     </section>
 
-    <section class="view userOptions hide">
-        <a class="userOptions__login" href="#">Login</a>
+    <section class="view userOptions">
+        <a class="userOptions__login" href="">Login</a>
         <span class="userOptions__slash">or</span>
-        <a class="userOptions__register" href="#">Register</a>
+        <a class="userOptions__register" href="">Register</a>
     </section>
 
     <section class="view hide">
@@ -39,20 +39,22 @@
             Surmname:<br>
             <input class="register__criteria" type="text" name="surname"><br>
             Age:<br>
-            <input class="register__criteria" type="text" name="age"><br>
+            <input class="register__criteria" type="number" name="age"><br>
             Gender:<br>
             <input class="register__criteria" type="text" name="gender"><br>
-            <button class="register__submit">Submit</button>
+            <button class="register__submit">Submit</button><br>
+            <a class="register__back" href="">Go back</a>
         </form>
     </section>
 
-    <section class="view">
+    <section class="view hide">
         <form class="login">
             User email:
             <input class="login__criteria" type="text" name="userid">
             User password:
             <input class="login__criteria" type="password" name="psw">
             <button class="login__submit">🔍</button>
+            <a class="login__back" href="">Go back</a>
         </form>
     </section>
 
@@ -71,9 +73,9 @@
         <p class="detail__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate neque omnis
             sunt dolor repellat incidunt voluptates odio eos consequatur corrupti. Accusantium porro minima molestias
             voluptatem dolor nobis! Perspiciatis, vero maiores!</p>
-        <a class="detail__store" href="#">Go to store</a>
+        <a class="detail__store" href="">Go to store</a>
         <span class="detail__price">10€</span>
-        <a class="detail__back" href="#">Go back</a>
+        <a class="detail__back" href="">Go back</a>
     </section>
 
     <footer class="boxheader">
@@ -100,6 +102,8 @@
     <script src="scripts/components/login.js"></script>
     <script src="scripts/components/user.js"></script>
     <script src="scripts/components/register.js"></script>
+    <script src="scripts/components/landing.js"></script>
+    <script src="scripts/components/errors.js"></script>
     <script src="scripts/main.js"></script>
 </body>
 

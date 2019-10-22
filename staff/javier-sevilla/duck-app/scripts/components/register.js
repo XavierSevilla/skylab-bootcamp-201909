@@ -14,11 +14,22 @@ Register.prototype.onSubmit = function (expression) {
         var surname = this.surname.value
         var age = this.age.value
         var gender = this.gender.value
+        expression(email,psw,name,surname,age,gender)
+                      
+    })
+}
 
-        if (!(email||pasw||name||surname||age||gender)) {
-            feedback.render("Debe introducir todos los campos MELON!!!")
-        } else {
-            expression(email,psw,name,surname,age,gender)
-        }                  
+Register.prototype.onBack = function (expression) {
+    this.container.addEventListener('submit', function (event) {
+        event.preventDefault()
+
+        var email = this.userid.value
+        var psw = this.psw.value
+        var name = this.name.value
+        var surname = this.surname.value
+        var age = this.age.value
+        var gender = this.gender.value
+        expression(email,psw,name,surname,age,gender)
+                      
     })
 }

@@ -1,75 +1,89 @@
 var views = document.getElementsByClassName('view');
-var userOptions = new View(views[0]);
+var userOptionsView = new View(views[0]);
 var registerView = new View(views[1]);
 var loginView = new View(views[2]);
 var searchView = new View(views[3]);
 var detailView = new View(views[4]);
 
-
-
-// var userOptions = document.getElementsByClassName("userOptions__login")[0];debugger;
-// var userOptions = document.createElement('a');
-// item.classList.add('userOptions__login');
-// item.addEventListener('click', event=>{
-// }
 var user = new User();
+debugger
+const landing = new Landing(document.getElementsByClassName('userOptions')[0])
+landing.onRegistrer(() => {
+    userOptionsView.hide()
+    registerView.show()
+})
+
+landing.onLogin(() => {
+    userOptionsView.hide()
+    loginView.show()
+})
 
 var register = new Register(document.getElementsByClassName('register')[0]);
 register.onSubmit((email, password, name, surname, age, gender) => {
-    registerUser(email, password, name, surname, age, gender, (error, response) => {
+    try {
+        registerUser(email, password, name, surname, age, gender, (error, response) => {
+            if (error) {
+                feedback.render(error.message)
+                feedback.show()
+            } else {
+                const { id } = response
+                user.id = id
+                user.email = email
+                user.password = password
+                user.name = name
+                user.surname = surname
+                user.age = age
+                user.gender = gender
+
+                loginUser(email, password, (error, response) => {
+                    if (error) {
+                        feedback.render(error.message)
+                        feedback.show()
+                    } else {
+                        registerView.hide()
+                        loginView.hide()
+                        searchView.show()
+                        feedback.hide()
+                        const { id, token } = response
+                        user.token = token
+
+                    }
+                });
+            }
+        });
+    } catch (error){
+        feedback.render(error.message)
+        feedback.show()
+    }
+});
+
+
+var login = new Login(document.getElementsByClassName('login')[0]);
+
+login.onSubmit((email, password) => {
+    loginUser(email, password, (error, response) => {
         if (error) {
             feedback.render(error.message)
             feedback.show()
         } else {
-            const { id } = response
-            user.id = id
-            user.email = email
-            user.password = password
-            user.name = name
-            user.surname = surname
-            user.age = age
-            user.gender = gender
-
-            loginUser(email, password, (error, response) => {
+            retrieveUser(response.id, response.token, (error, response) => {
                 if (error) {
                     feedback.render(error.message)
                     feedback.show()
                 } else {
-                    registerView.hide()
                     loginView.hide()
                     searchView.show()
                     feedback.hide()
-                    const { id, token } = response
-                    user.token = token  
-
                 }
-            });
-        }
-    });
-});
-
-
-var login =new Login(document.getElementsByClassName('login')[0]);
-login.onSubmit((email,password)=> {
-    loginUser(email, password, (error, response)=>  {
-        if (error) {
-            feedback.render(error.message)
-            feedback.show()
-        } else {
-            retrieveUser(response.id, response.token, (error, response)=>  {
-                if (error) {
-                    feedback.render(error.message)
-                    feedback.show()   
-                } else {                   
-                    loginView.hide()
-                    searchView.show()
-                    feedback.hide()                           
-                }                           
             })
         }
-    });
+    })
 });
 
+login.onBack(() => {
+    loginView.hide()
+    userOptionsView.show()
+});
 
 (function () {
     searchDucks('', (error, ducks) => {
@@ -104,7 +118,7 @@ search.onSubmit(query => {
 });
 
 var results = new Results(document.getElementsByClassName('results')[0]);
-results.onItemRender = function () {
+results.onItemRender = () => {
     var item = new ResultItem(document.createElement('li'));
 
     item.onClick = id => {
@@ -127,10 +141,11 @@ results.onItemRender = function () {
 };
 
 var detail = new Detail(document.getElementsByClassName('detail')[0]);
+debugger
 
-detail.onBack = function () {
-    detailView.hide();
-    searchView.show();
-};
+detail.onBack(() => {
+    detailView.hide()
+    searchView.show()
+})
 
 var feedback = new Feedback(document.getElementsByClassName('feedback')[0]);
