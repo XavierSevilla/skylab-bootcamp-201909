@@ -1,7 +1,9 @@
+const Feedback = require('../feedback')
+
 module.exports = function() {
     return `
     <section class="view register">
-    <form>
+    <form method='post' action='/register' >
         <h1 class="register__title">Register</h1>
         <input class="register__field" type="text" name="name" placeholder="name">
         <input class="register__field" type="text" name="surname" placeholder="surname">
@@ -9,6 +11,8 @@ module.exports = function() {
         <input class="register__field" type="password" name="password" placeholder="password">
         <button class="register__submit">📨</button>
     </form>
+
+    ${Feedback()}
 </section>
     `
 }
