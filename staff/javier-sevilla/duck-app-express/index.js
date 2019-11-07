@@ -4,8 +4,10 @@ const View = require('./components/view')
 const Login = require('./components/login')
 const Feedback = require('./components/feedback')
 const Register = require('./components/register')
+const Search = require('./components/search')
 const querystring = require('querystring')
 const registerUser = require('./logic/register-user')
+const authenticateUser = require('./logic/authenticate-user')
 
 const { argv: [, , port = 8080] } = process
 
@@ -14,20 +16,31 @@ const app = express()
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-    res.send(View({body: Landing({register: '/register'})})) 
+    res.send(View({body: Landing({register: '/register', login: '/login'})})) 
 })
 
 app.get('/register', (req, res) => {
-    res.send(View({body: Register()}))
+    res.send(View({body: Register({path: '/register'})}))
 
 })
 
 app.get('/login', (req, res) => {
-    res.send(View({body: Login()}))
+    res.send(View({body: Login({path: '/login'})}))
 
 })
 
-app.post('/login', (req, res)=>{
+app.get('/search', (req, res) => {
+    res.send(View({body: Search({path: '/search'})}))
+
+})
+
+
+// app.get('/feedback', (req, res) => {
+//     res.send(View({body: Feedback({message})}))
+
+// })
+
+app.post('/register', (req, res)=>{
     let content = ''
     req.on('data', chunk => {content += chunk})
 
@@ -38,21 +51,68 @@ app.post('/login', (req, res)=>{
        try {
           registerUser(name, surname, email, password, error=> {
               if (error) {
-                  res.send(View({body: Feedback()}))
+                res.send(View({body: Feedback()}))
               }else {
-                  res.send(View({body: Login()}))
+                  res.redirect('/login')
               }
           })
 
        } catch(error){
-
+           res.send(View({body: Feedback()}))
        }
        
-
     })
 
+})
 
+app.post('/login', (req, res)=>{
+    let content = ''
+    req.on('data', chunk => {content += chunk})
 
+    req.on('end', ()=> {
+
+       const { email, password } = querystring.parse(content)
+
+       try {
+            authenticateUser(email, password, (error, response)=> {
+              debugger
+              if (error) {
+                  res.send(View({body: Feedback()}))
+              }else {
+                 res.redirect('/search')
+              }
+          })
+
+       } catch(error){
+            res.send(View({body: Feedback()}))
+       }    
+
+    })
+})
+
+app.post('/search', (req, res)=>{
+    let content = ''
+    req.on('data', chunk => {content += chunk})
+
+    req.on('end', ()=> {
+
+       const { email, password } = querystring.parse(content)
+
+       try {
+            authenticateUser(email, password, (error, response)=> {
+              debugger
+              if (error) {
+                  res.send(View({body: Feedback()}))
+              }else {
+                 res.redirect('/search')
+              }
+          })
+
+       } catch(error){
+            res.send(View({body: Feedback()}))
+       }    
+
+    })
 })
 
 app.listen(port, () => console.log(`server running on port ${port}`))
