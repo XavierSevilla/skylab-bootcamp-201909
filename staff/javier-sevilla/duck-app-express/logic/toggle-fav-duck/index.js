@@ -6,8 +6,8 @@ module.exports = function (id, token, duckId) {
     validate.string.notVoid('id', id)
     validate.string(token)
     validate.string.notVoid('token', token)
-    if (typeof duckId !== 'string') throw new TypeError(duckId + ' is not a string')
-    if (!duckId.trim().length) throw new ContentError('duck id is empty or blank')
+    validate.string(duckId)
+    validate.string.notVoid('duckId', duckId)
 
     return new Promise((resolve, reject) => {
         call('GET', token, `https://skylabcoders.herokuapp.com/api/user/${id}`, undefined, result => {

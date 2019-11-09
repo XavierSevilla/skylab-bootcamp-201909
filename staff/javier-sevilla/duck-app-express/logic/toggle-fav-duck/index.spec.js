@@ -1,3 +1,7 @@
+const { expect } = require('chai')
+const call = require('../../helpers/call')
+const toggleFavDuck = require('.')
+
 describe('logic - toggle fav duck', () => {
     let name, surname, email, password, id, token, duckId = '5c3853aebd1bde8520e66e11'
 
@@ -26,22 +30,22 @@ describe('logic - toggle fav duck', () => {
     })
 
     it('should succeed on correct user and duck data', done => {
-        toggleFavDuck(id, token, duckId, (error, response) => {
-            expect(error).toBeUndefined()
-            expect(response).toBeUndefined()
+        toggleFavDuck(id, token, duckId)
+            .then(response => {
+                expect(response).to.be.undefined
 
-            call('GET', token, `https://skylabcoders.herokuapp.com/api/user/${id}`, undefined, result => {
-                if (result.error) return done(new Error(result.error))
+                call('GET', token, `https://skylabcoders.herokuapp.com/api/user/${id}`, undefined, result => {
+                    if (result.error) return done(new Error(result.error))
 
-                const { data: { favs } } = result
+                    const { data: { favs } } = result
 
-                expect(favs).toBeDefined()
-                expect(favs.length).toBe(1)
-                expect(favs[0]).toBe(duckId)
+                    expect(favs).to.exist
+                    expect(favs.length).to.equal(1)
+                    expect(favs[0]).to.equal(duckId)
 
-                done()
+                    done()
+                })
             })
-        })
     })
 
     describe('when fav already exists', () => {
@@ -52,21 +56,21 @@ describe('logic - toggle fav duck', () => {
         })
 
         it('should succeed on correct user and duck data', done => {
-            toggleFavDuck(id, token, duckId, (error, response) => {
-                expect(error).toBeUndefined()
-                expect(response).toBeUndefined()
+            toggleFavDuck(id, token, duckId)
+                .then(response => {
+                    expect(response).to.be.undefined
 
-                call('GET', token, `https://skylabcoders.herokuapp.com/api/user/${id}`, undefined, result => {
-                    if (result.error) return done(new Error(result.error))
+                    call('GET', token, `https://skylabcoders.herokuapp.com/api/user/${id}`, undefined, result => {
+                        if (result.error) return done(new Error(result.error))
 
-                    const { data: { favs } } = result
+                        const { data: { favs } } = result
 
-                    expect(favs).toBeDefined()
-                    expect(favs.length).toBe(0)
+                        expect(favs).to.exist
+                        expect(favs.length).to.equal(0)
 
-                    done()
+                        done()
+                    })
                 })
-            })
         })
     })
 

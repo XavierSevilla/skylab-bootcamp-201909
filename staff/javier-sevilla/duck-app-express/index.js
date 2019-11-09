@@ -12,11 +12,27 @@ const app = express()
 
 app.use(express.static('public'))
 
-app.get('/', (req, res) => {
+app.get('/', cookieParser, (req, res) => {
+    const { cookies: { id } } = req
+    const session = sessions[id]
+
+    if (session) {
+        const { route } = session
+        return res.redirect(`${route}`)
+    }
+
     res.send(View({ body: Landing({ register: '/register', login: '/login' }) }))
 })
 
-app.get('/register', (req, res) => {
+app.get('/register', cookieParser, (req, res) => {
+    const { cookies: { id } } = req
+    const session = sessions[id]
+
+    if (session) {
+        const { route } = session
+        return res.redirect(`${route}`)
+    }
+
     res.send(View({ body: Register({ path: '/register' }) }))
 })
 
@@ -32,7 +48,14 @@ app.post('/register', bodyParser, (req, res) => {
     }
 })
 
-app.get('/login', (req, res) => {
+app.get('/login', cookieParser, (req, res) => {
+    const { cookies: { id } } = req
+    const session = sessions[id]
+
+    if (session) {
+        const { route } = session
+        return res.redirect(`${route}`)
+    }
     res.send(View({ body: Login({ path: '/login' }) }))
 })
 
@@ -44,7 +67,7 @@ app.post('/login', bodyParser, (req, res) => {
             .then(credentials => {
                 const { id, token } = credentials
 
-                sessions[id] = token
+                sessions[id] = { token }
 
                 //console.dir(sessions)
 
@@ -61,25 +84,34 @@ app.post('/login', bodyParser, (req, res) => {
 })
 
 app.get('/search', cookieParser, (req, res) => {
+    const { cookies: { id }, query: { q: query } } = req
+
+    if (!id) return res.redirect('/')
+
+    const session = sessions[id]
+
+    if (!session) return res.redirect('/')
+
+    const { token } = session
+
+    session.route = '/search'
+
+    if (!token) return res.redirect('/')
+
+    let name
+
     try {
-        const { cookies: { id }, query: { q: query } } = req
-
-        if (!id) return res.redirect('/')
-
-        const token = sessions[id]
-
-        if (!token) return res.redirect('/')
-
-        let name
-
         retrieveUser(id, token)
             .then((data) => {
-                name = data.name              
+                name = data.name
 
                 if (!query) return res.send(View({ body: Search({ path: '/search', name, logout: '/logout' }) }))
 
+                session.query = query
+                session.route = `/search?q=${query}`
+
                 return searchDucks(id, token, query)
-                    .then(ducks => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', results: ducks, favPath: '/fav' }) })))
+                    .then(ducks => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', results: ducks, favPath: '/fav', detail: '/duck'}) })))
             })
             .catch(({ message }) => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) })))
     } catch ({ message }) {
@@ -100,28 +132,34 @@ app.post('/logout', cookieParser, (req, res) => {
 })
 
 app.post('/fav', cookieParser, bodyParser, (req, res) => {
+    const { cookies: { id }, body: { id: duckId } } = req
+
+    if (!id) return res.redirect('/')
+
+    const session = sessions[id]
+
+    const { token, query } = session
+
+    if (!session) return res.redirect('/')
+
+    session.route = `/search?q=${query}`
+
     try {
-        const { cookies: { id }, body: { id: duckId } } = req
-
-        if (!id) return res.redirect('/')
-
-        const token = sessions[id]
-
-        if (!token) return res.redirect('/')
-
-        let query = "red"
-
-        toggleFavDuck(id, token, duckId) 
-            .then(() => {
-                
-                res.redirect('/search?q=' + query)
-        
-                
-            })
-            .catch("error")
-    } catch (error) {
-        res.send('kaput')
+        toggleFavDuck(id, token, duckId)
+            .then(res.redirect(`/search?q=${query}`))
+            .catch(({ message }) => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) })))
+    } catch ({ message }) {
+        res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) }))
     }
+})
+
+app.get('/duck/:id', (req, res) => {
+    
+    const { params: { id } } = req
+
+    // TODO control session, etc
+
+    res.send('TODO detail of duck ' + id)
 })
 
 app.listen(port, () => console.log(`server running on port ${port}`))

@@ -3,6 +3,8 @@ module.exports = function (req) {
 
     const cookies = {}
 
+    if (!cookie) return cookies
+
     const keyValues = cookie.split(';')
 
     keyValues.forEach(keyValue => {
