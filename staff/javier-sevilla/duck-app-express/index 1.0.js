@@ -17,9 +17,7 @@ app.get('/', cookieParser, (req, res) => {
     const session = sessions[id]
 
     if (session) {
-        let route
-        if (session.vengo === 'detail') route = session.routeDetail
-        else route = session.routeSearch
+        const { route } = session
         return res.redirect(`${route}`)
     }
 
@@ -31,9 +29,7 @@ app.get('/register', cookieParser, (req, res) => {
     const session = sessions[id]
 
     if (session) {
-        let route
-        if (session.vengo === 'detail') route = session.routeDetail
-        else route = session.routeSearch
+        const { route } = session
         return res.redirect(`${route}`)
     }
 
@@ -57,9 +53,7 @@ app.get('/login', cookieParser, (req, res) => {
     const session = sessions[id]
 
     if (session) {
-        let route
-        if (session.vengo === 'detail') route = session.routeDetail
-        else route = session.routeSearch
+        const { route } = session
         return res.redirect(`${route}`)
     }
     res.send(View({ body: Login({ path: '/login' }) }))
@@ -74,6 +68,8 @@ app.post('/login', bodyParser, (req, res) => {
                 const { id, token } = credentials
 
                 sessions[id] = { token }
+
+                //console.dir(sessions)
 
                 res.setHeader('set-cookie', `id=${id}`)
 
@@ -140,6 +136,8 @@ app.post('/logout', cookieParser, (req, res) => {
 app.post('/fav', cookieParser, bodyParser, (req, res) => {
     const { cookies: { id }, body: { id: duckId } } = req
 
+    console.log('entro fav - ' )
+
     if (!id) return res.redirect('/')
 
     const session = sessions[id]
@@ -148,9 +146,13 @@ app.post('/fav', cookieParser, bodyParser, (req, res) => {
 
     if (!session) return res.redirect('/')
 
+    // session.route = `/search?q=${query}`
+
     let route
     if (vengo === 'detail') route = session.routeDetail
     else route = session.routeSearch
+
+    console.log(duckId + route)
 
     try {
         toggleFavDuck(id, token, duckId)
@@ -177,19 +179,22 @@ app.get('/duck/:id', cookieParser, (req, res) => {
 
     if (!duckId) return res.redirect(`${session.routeSearch}`)
 
+
     if (duckId != 'icon.png') session.routeDetail = `/duck/${duckId}`
 
-    try {   
-        retrieveUser(id, token)
-        .then((data) => {
-            session.vengo = 'detail'
+    // session.routeAnt = session.route
+    // session.route = `/duck/${duckId}`
+    // console.log('idduck - ' + duckId )
 
-            return retrieveDuck(id, token, duckId)
-                .then((duck) => {
-                    res.send(View({body: Detail({item: duck, onBack: routeSearch, favPath: '/fav'})}))
-                })
-        })       
-        .catch(({ message }) => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) })))        
+    session.vengo = 'detail'
+
+    try {   
+        retrieveDuck(id, token, duckId)
+            .then((duck) => {
+                res.send(View({body: Detail({item: duck, onBack: routeSearch, favPath: '/fav'})}))
+            })
+            .catch(({ message }) => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) })))
+        
     } catch ({ message }) {
         res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) }))
     }
