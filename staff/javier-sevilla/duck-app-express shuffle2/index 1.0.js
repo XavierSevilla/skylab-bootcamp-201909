@@ -1,6 +1,6 @@
 const express = require('express')
-const { View, Landing, Register, Login, Search } = require('./components')
-const { registerUser, authenticateUser, retrieveUser, searchDucks, toggleFavDuck } = require('./logic')
+const { View, Landing, Register, Login, Search, Detail } = require('./components')
+const { registerUser, authenticateUser, retrieveUser, searchDucks, toggleFavDuck, retrieveDuck } = require('./logic')
 // const logic = require('./logic')
 const { bodyParser, cookieParser } = require('./utils/middlewares')
 
@@ -94,7 +94,7 @@ app.get('/search', cookieParser, (req, res) => {
 
     const { token } = session
 
-    session.route = '/search'
+    session.routeSearch = '/search'
 
     if (!token) return res.redirect('/')
 
@@ -104,15 +104,16 @@ app.get('/search', cookieParser, (req, res) => {
         retrieveUser(id, token)
             .then((data) => {
                 name = data.name
+                session.name = name
 
                 if (!query) return res.send(View({ body: Search({ path: '/search', name, logout: '/logout' }) }))
 
                 session.query = query
-                session.route = `/search?q=${query}`
-
+                session.routeSearch = `/search?q=${query}`
+                session.vengo = 'search'
 
                 return searchDucks(id, token, query)
-                    .then(ducks => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', results: ducks, favPath: '/fav' }) })))
+                    .then(ducks => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', results: ducks, favPath: '/fav', detail: '/duck' }) })))
             })
             .catch(({ message }) => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) })))
     } catch ({ message }) {
@@ -135,23 +136,69 @@ app.post('/logout', cookieParser, (req, res) => {
 app.post('/fav', cookieParser, bodyParser, (req, res) => {
     const { cookies: { id }, body: { id: duckId } } = req
 
+    console.log('entro fav - ' )
+
     if (!id) return res.redirect('/')
 
     const session = sessions[id]
 
-    const { token, query } = session
+    const { token, query, name, vengo } = session
 
     if (!session) return res.redirect('/')
 
-    session.route = `/search?q=${query}`
+    // session.route = `/search?q=${query}`
+
+    let route
+    if (vengo === 'detail') route = session.routeDetail
+    else route = session.routeSearch
+
+    console.log(duckId + route)
 
     try {
         toggleFavDuck(id, token, duckId)
-            .then(res.redirect(`/search?q=${query}`))
+            .then(res.redirect(route))
             .catch(({ message }) => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) })))
     } catch ({ message }) {
         res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) }))
     }
+})
+
+app.get('/duck/:id', cookieParser, (req, res) => {
+
+    // console.log(req)
+
+    const { cookies: { id }, params: { id: duckId } } = req
+
+    if (!id) return res.redirect('/')
+
+    const session = sessions[id]
+
+    const { token, query, name, routeSearch } = session
+
+    if (!session) return res.redirect('/')
+
+    if (!duckId) return res.redirect(`${session.routeSearch}`)
+
+
+    if (duckId != 'icon.png') session.routeDetail = `/duck/${duckId}`
+
+    // session.routeAnt = session.route
+    // session.route = `/duck/${duckId}`
+    // console.log('idduck - ' + duckId )
+
+    session.vengo = 'detail'
+
+    try {   
+        retrieveDuck(id, token, duckId)
+            .then((duck) => {
+                res.send(View({body: Detail({item: duck, onBack: routeSearch, favPath: '/fav'})}))
+            })
+            .catch(({ message }) => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) })))
+        
+    } catch ({ message }) {
+        res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) }))
+    }
+
 })
 
 app.listen(port, () => console.log(`server running on port ${port}`))

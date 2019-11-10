@@ -3,6 +3,7 @@ const { View, Landing, Register, Login, Search, Detail } = require('./components
 const { registerUser, authenticateUser, retrieveUser, searchDucks, toggleFavDuck, retrieveDuck } = require('./logic')
 // const logic = require('./logic')
 const { bodyParser, cookieParser } = require('./utils/middlewares')
+const shuffle = require('./utils/array-shuffle')
 
 const { argv: [, , port = 8080] } = process
 
@@ -75,9 +76,26 @@ app.post('/login', bodyParser, (req, res) => {
 
                 sessions[id] = { token }
 
+                const session = sessions[id]
+
                 res.setHeader('set-cookie', `id=${id}`)
 
-                res.redirect('/search')
+                let name
+
+                return retrieveUser(id, token)
+                    .then((data) => {
+                        name = data.name
+                        session.name = name
+
+                        session.vengo = 'search'
+    
+                        return searchDucks(id, token, '')
+                            .then(ducks => {
+                                ducks = ducks.shuffle().splice(0, 3)
+                                res.send(View({ body: Search({ path: '/search', query:'', name, logout: '/logout', results: ducks, favPath: '/fav', detail: '/duck' }) }))
+                            })
+                            
+                    })
             })
             .catch(({ message }) => {
                 res.send(View({ body: Login({ path: '/login', error: message }) }))
@@ -179,17 +197,17 @@ app.get('/duck/:id', cookieParser, (req, res) => {
 
     if (duckId != 'icon.png') session.routeDetail = `/duck/${duckId}`
 
-    try {   
+    try {
         retrieveUser(id, token)
-        .then((data) => {
-            session.vengo = 'detail'
+            .then((data) => {
+                session.vengo = 'detail'
 
-            return retrieveDuck(id, token, duckId)
-                .then((duck) => {
-                    res.send(View({body: Detail({item: duck, onBack: routeSearch, favPath: '/fav'})}))
-                })
-        })       
-        .catch(({ message }) => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) })))        
+                return retrieveDuck(id, token, duckId)
+                    .then((duck) => {
+                        res.send(View({ body: Detail({ item: duck, onBack: routeSearch, favPath: '/fav' }) }))
+                    })
+            })
+            .catch(({ message }) => res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) })))
     } catch ({ message }) {
         res.send(View({ body: Search({ path: '/search', query, name, logout: '/logout', error: message }) }))
     }
