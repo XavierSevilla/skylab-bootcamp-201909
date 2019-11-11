@@ -163,8 +163,6 @@ app.post('/fav', cookieParser, bodyParser, (req, res) => {
 
 app.get('/duck/:id', cookieParser, (req, res) => {
 
-    // console.log(req)
-
     const { cookies: { id }, params: { id: duckId } } = req
 
     if (!id) return res.redirect('/')
@@ -177,7 +175,7 @@ app.get('/duck/:id', cookieParser, (req, res) => {
 
     if (!duckId) return res.redirect(`${session.routeSearch}`)
 
-    if (duckId != 'icon.png') session.routeDetail = `/duck/${duckId}`
+    session.routeDetail = `/duck/${duckId}`
 
     try {   
         retrieveUser(id, token)
