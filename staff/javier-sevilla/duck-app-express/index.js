@@ -2,7 +2,10 @@ const express = require('express')
 const { View, Landing, Register, Login, Search, Detail } = require('./components')
 const { registerUser, authenticateUser, retrieveUser, searchDucks, toggleFavDuck, retrieveDuck } = require('./logic')
 // const logic = require('./logic')
-const { bodyParser, cookieParser } = require('./utils/middlewares')
+// const { bodyParser, cookieParser } = require('./utils/middlewares')
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const FileStore = require('session-file-store')(session)
 
 const { argv: [, , port = 8080] } = process
 
@@ -11,6 +14,14 @@ const sessions = {}
 const app = express()
 
 app.use(express.static('public'))
+
+app.use(session({
+    store: new FileStore({
+    }),
+    secret: 'a super secret thing',
+    saveUninitialized: true,
+    resave: true
+}))
 
 app.get('/', cookieParser, (req, res) => {
     const { cookies: { id } } = req
