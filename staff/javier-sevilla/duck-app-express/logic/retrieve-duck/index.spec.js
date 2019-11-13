@@ -100,7 +100,7 @@ describe('logic - retrieve duck', () => {
 
         return retrieveDuck(id, token, wrongDuckId)
             .then(duck => {
-                expect(duck).to.equalUndefined()
+                expect(duck).to.exist
             })
             .catch(error => {
                 expect(error).to.exist
