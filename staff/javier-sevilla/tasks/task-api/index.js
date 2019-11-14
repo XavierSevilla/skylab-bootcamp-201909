@@ -4,12 +4,19 @@ const { name, version } = require('./package.json')
 const users = require('./data/users')()
 const { registerUser, authenticateUser, retrieveUser } = require('./logic')
 const { ConflictError, CredentialsError, NotFoundError } = require('./utils/errors')
+const jwt = require('jsonwebtoken');
+const exjwt = require('express-jwt');
+
 
 const api = express()
 
 const jsonBodyParser = bodyParser.json()
 
 const { argv: [, , port = 8080] } = process
+
+const jwtMW = exjwt({
+    secret: 'keyboard cat 4 ever'
+});
 
 api.post('/users', jsonBodyParser, (req, res) => {
     const { body: { name, surname, email, username, password } } = req
@@ -33,7 +40,14 @@ api.post('/auth', jsonBodyParser, (req, res) => {
 
     try {
         authenticateUser(username, password)
-            .then(id => res.json({ message: 'user authenticated successfully', id })) // TODO token
+            .then(id => {
+                // res.json({ message: 'user authenticated successfully', id }) // TODO token
+                let token = jwt.sign({ id: id}, 'keyboard cat 4 ever', { expiresIn: 129600 }); // Sigining the token
+                res.json({
+                    message: 'user authenticated successfully',
+                    token
+                });
+            })
             .catch(error => {
                 if (error instanceof NotFoundError)
                     return res.status(404).json({ message: error.message })

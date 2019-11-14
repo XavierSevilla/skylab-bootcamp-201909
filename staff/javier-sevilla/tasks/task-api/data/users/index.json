@@ -166,5 +166,37 @@
         "email": "pepito@grillo.com",
         "username": "pepito2",
         "password": "123"
+    },
+    {
+        "id": "af1f654d-a6bc-4cc0-9d20-8e5369d270f8",
+        "name": "Pamela",
+        "surname": "Chu",
+        "email": "pojohn@mmm.com",
+        "username": "pamelachu",
+        "password": "123"
+    },
+    {
+        "id": "bd295d78-8ef7-4f51-b96f-cf093aaa48d2",
+        "name": "Pamela",
+        "surname": "Chu",
+        "email": "pojohn@mmm.com",
+        "username": "pamelachup",
+        "password": "123"
+    },
+    {
+        "id": "193235c6-2fb5-4eb8-8da3-a1c7b7bb9300",
+        "name": "Pamela",
+        "surname": "Chu",
+        "email": "pojohn@mmm.com",
+        "username": "pamelachupa",
+        "password": "123"
+    },
+    {
+        "id": "c9c6da66-a74d-470e-8124-a7ced6c7fefc",
+        "name": "Pamela",
+        "surname": "Chu",
+        "email": "pojohn@mmm.com",
+        "username": "xavi",
+        "password": "123"
     }
 ]
