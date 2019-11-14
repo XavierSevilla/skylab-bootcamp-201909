@@ -1,18 +1,20 @@
 const { expect } = require('chai')
+const users = require('../../data/users')('test')
 const registerUser = require('.')
 const { ContentError } = require('../../utils/errors')
-const fs = require('fs').promises
-const path = require('path')
+const { random } = Math
 
 describe('logic - register user', () => {
+    before(() => users.load())
+
     let name, surname, email, username, password
 
     beforeEach(() => {
-        name = `name-${Math.random()}`
-        surname = `surname-${Math.random()}`
-        email = `email-${Math.random()}@mail.com`
-        username = `username-${Math.random()}`
-        password = `password-${Math.random()}`
+        name = `name-${random()}`
+        surname = `surname-${random()}`
+        email = `email-${random()}@mail.com`
+        username = `username-${random()}`
+        password = `password-${random()}`
     })
 
     it('should succeed on correct credentials', () =>
@@ -20,12 +22,7 @@ describe('logic - register user', () => {
             .then(response => {
                 expect(response).to.be.undefined
 
-                return fs.readFile(path.join(__dirname, '../../data/users.json'))
-            })
-            .then(json => {
-                const users = JSON.parse(json)
-
-                const user = users.find(user => user.username === username)
+                const user = users.data.find(user => user.username === username)
 
                 expect(user).to.exist
 
@@ -34,16 +31,21 @@ describe('logic - register user', () => {
                 expect(user.email).to.equal(email)
                 expect(user.username).to.equal(username)
                 expect(user.password).to.equal(password)
+
+                const { id } = user
+                expect(id).to.exist
+                expect(id).to.be.a('string')
+                expect(id).to.have.length.greaterThan(0)
             })
     )
 
-    describe.skip('when user already exists', () => {
-        beforeEach(done => {
-            
+    describe('when user already exists', () => {
+        beforeEach(() => {
+            users.data.push({ name, surname, email, username, password })
         })
 
         it('should fail on already existing user', () =>
-            registerUser(name, surname, email, password)
+            registerUser(name, surname, email, username, password)
                 .then(() => {
                     throw Error('should not reach this point')
                 })
@@ -53,7 +55,7 @@ describe('logic - register user', () => {
                     expect(error.message).to.exist
                     expect(typeof error.message).to.equal('string')
                     expect(error.message.length).to.be.greaterThan(0)
-                    expect(error.message).to.equal(`user with username "${email}" already exists`)
+                    expect(error.message).to.equal(`user with username ${username} already exists`)
                 })
         )
     })
