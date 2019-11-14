@@ -1,7 +1,8 @@
 const validate = require('../../utils/validate')
-const users = require('../../data/users.json')
+const users = require('../../data/users')
 const fs = require('fs')
 const path = require('path')
+const uuid = require('uuid/v4')
 
 module.exports = function(name, surname, email, username, password) {
     validate.string(name)
@@ -10,25 +11,20 @@ module.exports = function(name, surname, email, username, password) {
     validate.string.notVoid('surname', surname)
     validate.string(email)
     validate.string.notVoid('e-mail', email)
+    validate.email(email)
     validate.string(username)
     validate.string.notVoid('username', username)
     validate.string(password)
     validate.string.notVoid('password', password)
 
     return new Promise((resolve, reject) => {
-        users.push({ name, surname, email, username, password })
+        const user = users.find(user => user.username === username)
 
-        // logic rules!!!!
+        if (user) return reject(Error(`user with username ${username} already exists`))
 
+        const id = uuid()
 
-
-
-
-        
-        const json = fs.readFile(path.join(__dirname, '../../data/users.json'))
-        const usersDisk = JSON.parse(json)
-
-        const user = usersDisk.find(user => usersDisk.username === username)
+        users.push({id, name, surname, email, username, password })
 
         if (user) return reject(new Error(error))
 

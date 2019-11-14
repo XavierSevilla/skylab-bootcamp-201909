@@ -41,7 +41,7 @@ describe('logic - register user', () => {
     describe('when user already exists', () => {
         beforeEach(done => {
             users.push({ name, surname, email, username, password })
-            fs.writeFile(path.join(__dirname, '../../data/users.json'), JSON.stringify(users), error => error? done(new Error(error)) : done())
+        
             
         })
 
