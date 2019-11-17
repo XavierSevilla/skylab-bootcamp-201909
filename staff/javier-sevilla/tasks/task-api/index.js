@@ -3,7 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const { name, version } = require('./package.json')
-const { registerUser, authenticateUser, retrieveUser, createTask, listTasks, modifyTask } = require('./logic')
+const { registerUser, authenticateUser, retrieveUser, createTask, listTasks, modifyTask, removeTask } = require('./logic')
 const { ConflictError, CredentialsError, NotFoundError } = require('./utils/errors')
 const jwt = require('jsonwebtoken')
 const { argv: [, , port], env: { SECRET, PORT = port || 8080, DB_URL } } = process
@@ -139,7 +139,26 @@ api.patch('/tasks/:taskId', tokenVerifier, jsonBodyParser, (req, res) => {
 })
 
 api.delete('/tasks/:taskId', tokenVerifier, (req, res) => {
-    res.send('TODO')
+    try {
+        const { id, params: { taskId } } = req
+
+        removeTask(id, taskId)
+            .then(() =>
+                res.end()
+            )
+            .catch(error => {
+                const { message } = error
+
+                if (error instanceof NotFoundError)
+                    return res.status(404).json({ message })
+                if (error instanceof ConflictError)
+                    return res.status(409).json({ message })
+
+                res.status(500).json({ message })
+            })
+    } catch ({ message }) {
+        res.status(400).json({ message })
+    }
 })
 
 database(DB_URL)
