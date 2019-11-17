@@ -1,24 +1,32 @@
+require('dotenv').config()
+const { env: { DB_URL_TEST } } = process
 const { expect } = require('chai')
 const { random } = Math
-const users = require('../../data/users')('test')
+const database = require('../../utils/database')
 const retrieveUser = require('.')
-const uuid = require('uuid/v4')
 const { NotFoundError } = require('../../utils/errors')
 
 describe('logic - retrieve user', () => {
-    before(() => users.load())
+    let client, users
+
+    before(() => {
+        client = database(DB_URL_TEST)
+
+        return client.connect()
+            .then(connection => users = connection.db().collection('users'))
+    })
 
     let id, name, surname, email, username, password
 
     beforeEach(() => {
-        id = uuid()
         name = `name-${random()}`
         surname = `surname-${random()}`
         email = `email-${random()}@mail.com`
         username = `username-${random()}`
         password = `password-${random()}`
 
-        users.data.push({ id, name, surname, email, username, password })
+        return users.insertOne({ name, surname, email, username, password })
+            .then(({ insertedId }) => id = insertedId.toString())
     })
 
     it('should succeed on correct user id', () =>
